@@ -4,7 +4,7 @@ exports.up = function(knex) {
     table.increments();
     table.string('username', 128).unique().notNullable();
     table.string('password', 128).notNullable();
-    table.string('name, 128').notNullable()
+    table.string('name', 128).notNullable()
   }).createTable('board', table => {
     table.increments();
     table.string('name', 128).notNullable();
