@@ -28,6 +28,19 @@ router.post('/', verifyToken, async (req, res) => {
   }
 })
 
+router.put('/:id', verifyToken, async (req, res) => {
+  try {
+    const board= await boardsHelpers.modify(req.params.id, req.body);
+
+    res.status(201).json({
+      message: 'board updated successfully',
+      board: board
+    });
+  } catch(err) {
+    res.status(500).json({ message: 'failed to updapte board'})
+  }
+})
+
 router.post('/:id/feedback', verifyToken, async (req, res) => {
   try {
     const newFeedback = {

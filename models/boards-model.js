@@ -7,7 +7,8 @@ module.exports = {
   findById,
   findFeedbackById,
   addFeedback,
-  getBoardFeedback
+  getBoardFeedback,
+  modify
 };
 
 function find() {
@@ -46,4 +47,12 @@ async function getBoardFeedback(board_id) {
   const feedbacks = await db('feedback').where({ board_id: board_id });
 
   return feedbacks;
+}
+
+async function modify(board_id, changes) {
+  await db('board')
+    .update(changes)
+    .where({ id: board_id })
+  
+  return findById(board_id);
 }
