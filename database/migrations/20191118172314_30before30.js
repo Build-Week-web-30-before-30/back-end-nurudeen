@@ -14,6 +14,14 @@ exports.up = function(knex) {
          .notNullable()
          .references('id')
          .inTable('users');
+  }).createTable('feedback', table => {
+    table.increments();
+    table.string('text', 128).notNullable();
+    table.integer('board_id')
+         .unsigned()
+         .notNullable()
+         .references('id')
+         .inTable('board');
   }).createTable('todo', table => {
     table.increments();
     table.string('name', 128).notNullable();
@@ -38,6 +46,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.dropTableIfExists('links')
                     .dropTableIfExists('todo')
+                    .dropTableIfExists('feedback')
                     .dropTableIfExists('board')
                     .dropTableIfExists('users')
 };

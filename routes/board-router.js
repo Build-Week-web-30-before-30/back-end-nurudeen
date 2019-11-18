@@ -20,10 +20,27 @@ router.post('/', verifyToken, async (req, res) => {
 
     res.status(201).json({
       message: 'board created successfully',
-      board_id: board
+      board: board
     });
   } catch(err) {
     res.status(500).json({ message: 'failed to insert new board'})
+  }
+})
+
+router.post('/:id/feedback', verifyToken, async (req, res) => {
+  try {
+    const newFeedback = {
+      board_id: req.params.id,
+      text: req.body.text
+    }
+    const feedback = await boardsHelpers.addFeedback(newFeedback);
+
+    res.status(201).json({
+      message: 'feedback added successfully',
+      feddback: feedback
+    });
+  } catch(err) {
+    res.status(500).json({ message: 'failed to add new feedback'})
   }
 })
 

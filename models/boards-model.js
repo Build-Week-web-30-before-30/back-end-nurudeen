@@ -5,6 +5,8 @@ module.exports = {
   find,
   findPublic,
   findById,
+  findFeedbackById,
+  addFeedback
 };
 
 function find() {
@@ -23,6 +25,18 @@ async function add(newBoard) {
 
 function findById(id) {
   return db('board')
+    .where({ id })
+    .first();
+}
+
+async function addFeedback(newFeedback) {
+  const [id] = await db('feedback').insert(newFeedback);
+
+  return findFeedbackById(id);
+}
+
+function findFeedbackById(id) {
+  return db('feedback')
     .where({ id })
     .first();
 }
