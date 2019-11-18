@@ -6,7 +6,8 @@ module.exports = {
   findPublic,
   findById,
   findFeedbackById,
-  addFeedback
+  addFeedback,
+  getBoardFeedback
 };
 
 function find() {
@@ -39,4 +40,10 @@ function findFeedbackById(id) {
   return db('feedback')
     .where({ id })
     .first();
+}
+
+async function getBoardFeedback(board_id) {
+  const feedbacks = await db('feedback').where({ board_id: board_id });
+
+  return feedbacks;
 }

@@ -44,4 +44,18 @@ router.post('/:id/feedback', verifyToken, async (req, res) => {
   }
 })
 
+router.get('/:id/feedback', verifyToken, async (req, res) => {
+  try {
+    const feedback = await boardsHelpers.getBoardFeedback(req.params.id);
+
+    res.status(200).json(
+     feedback
+    );
+  } catch(err) {
+    res.status(500).json({ message: `failed to fetch feedback for board ${req.params.id}`})
+  }
+})
+
+
+
 module.exports = router;
