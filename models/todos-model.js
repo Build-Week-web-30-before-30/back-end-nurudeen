@@ -26,8 +26,11 @@ async function add(todo) {
   return getTodoById(id);
 }
 
-function modify(id, update) {
-  return db('todo')
-    .update(update)
-    .where({ id: id });
+async function modify(todo_id, changes) {
+  console.log(todo_id,changes)
+  const updated = await db('todo')
+    .update(changes)
+    .where({ id: todo_id })
+  
+  return getTodoById(todo_id);
 }
