@@ -15,6 +15,26 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:id', async (req, res) => {
+  try {
+    const boards= await boardsHelpers.findById(req.params.id);
+    const todos = await todoHelper.getByBoard(req.params.id);
+    const resBoards = {
+      id: boards.id,
+      name: boards.name,
+      public: boards.public,
+      user_id: boards.user_id,
+      completed: boards.completed,
+      deadline: boards.deadline,
+      todos: todos
+    }
+
+    res.status(200).json(resBoards);
+  } catch(err) {
+    res.status(500).json({ message: 'failed to get board'})
+  }
+})
+
 router.post('/', verifyToken, async (req, res) => {
   try {
     const board= await boardsHelpers.add(req.body);
