@@ -98,6 +98,7 @@ router.get('/:id/feedback', verifyToken, async (req, res) => {
 
 router.get('/:id/todo', async (req, res) => {
   try {
+    
     const todos= await todoHelper.getByBoard(req.params.id);
 
     res.status(200).json(todos);
@@ -108,12 +109,12 @@ router.get('/:id/todo', async (req, res) => {
 
 router.post('/:id/todo', verifyToken, async (req, res) => {
   try {
-    const newTodo = ({
+    const newTodo = {
       name: req.body.name,
-      completed: req.body.completed,
+      completed: req.body.completed === true ? "true" : "false",
       deadline: req.body.deadline,
-      board_id: req.params.id
-    })
+      board_id: req.params.board_id
+    }
     const todo = await todoHelper.add(newTodo);
 
     res.status(201).json({
