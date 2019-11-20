@@ -113,7 +113,7 @@ router.post('/:id/todo', verifyToken, async (req, res) => {
       name: req.body.name,
       completed: req.body.completed === true ? "true" : "false",
       deadline: req.body.deadline,
-      board_id: req.params.board_id
+      board_id: req.params.id
     }
     const todo = await todoHelper.add(newTodo);
 
