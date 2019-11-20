@@ -55,7 +55,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const condition = { public: req.body.completed === true ? "true" : "false" };
+    const condition = { public: req.body.public === true ? "true" : "false" };
     const board= await boardsHelpers.modify(req.params.id, condition);
 
     res.status(201).json({
