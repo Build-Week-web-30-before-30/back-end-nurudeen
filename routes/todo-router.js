@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const todo = await todoHelper.modify(req.params.id, req.body);
+    const condition = {completed: req.body.completed === true ? "true" : "false" }
+    const todo = await todoHelper.modify(req.params.id, condition);
 
     res.status(200).json({
       message: 'todo updated successfully',
