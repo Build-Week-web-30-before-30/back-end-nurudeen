@@ -37,7 +37,12 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const board= await boardsHelpers.add(req.body);
+    const sendBoard = {
+      name: req.body.name,
+      public: req.body.public === true ? "true" : "false",
+      user_id: req.body.user_id
+    }
+    const board= await boardsHelpers.add(sendBoard);
 
     res.status(201).json({
       message: 'board created successfully',
