@@ -71,7 +71,8 @@ router.post('/:id/feedback', verifyToken, async (req, res) => {
   try {
     const newFeedback = {
       board_id: req.params.id,
-      text: req.body.text
+      text: req.body.text,
+      rating: req.body.rating
     }
     const feedback = await boardsHelpers.addFeedback(newFeedback);
 
