@@ -8,14 +8,27 @@ describe('server', () => {
     })
 
     test('should return 200 OK', async () => {
-      const response = await request(server).get('/api/board/')
+      const response = await request(server)
+      .get('/api/board/')
+      .expect('Content-Type', /json/)
       expect(response.status).toBe(200)
     })
 
     test('should return 200 OK with ES6 promise', () => {
-      return request(server).get('/api/board/')
+      return request(server)
+      .get('/api/board/')
+      .expect('Content-Type', /json/)
         .then(response => {
           expect(response.status).toBe(200)
+        })
+    })
+
+    test('should not work without auth', () => {
+      return request(server)
+      .post('/api/board/')
+      .expect('Content-Type', /json/)
+        .then(response => {
+          expect(response.status).toBe(401)
         })
     })
   })
