@@ -15,9 +15,34 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:id', async (req, res) => {
+  try {
+    const boards= await boardsHelpers.findById(req.params.id);
+    const todos = await todoHelper.getByBoard(req.params.id);
+    const resBoards = {
+      id: boards.id,
+      name: boards.name,
+      public: boards.public,
+      user_id: boards.user_id,
+      completed: boards.completed,
+      deadline: boards.deadline,
+      todos: todos
+    }
+
+    res.status(200).json(resBoards);
+  } catch(err) {
+    res.status(500).json({ message: 'failed to get board'})
+  }
+})
+
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const board= await boardsHelpers.add(req.body);
+    const sendBoard = {
+      name: req.body.name,
+      public: req.body.public === true ? "true" : "false",
+      user_id: req.body.user_id
+    }
+    const board= await boardsHelpers.add(sendBoard);
 
     res.status(201).json({
       message: 'board created successfully',
@@ -30,7 +55,8 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const board= await boardsHelpers.modify(req.params.id, req.body);
+    const condition = { public: req.body.public === true ? "true" : "false" };
+    const board= await boardsHelpers.modify(req.params.id, condition);
 
     res.status(201).json({
       message: 'board updated successfully',
@@ -45,7 +71,8 @@ router.post('/:id/feedback', verifyToken, async (req, res) => {
   try {
     const newFeedback = {
       board_id: req.params.id,
-      text: req.body.text
+      text: req.body.text,
+      rating: req.body.rating
     }
     const feedback = await boardsHelpers.addFeedback(newFeedback);
 
@@ -72,6 +99,7 @@ router.get('/:id/feedback', verifyToken, async (req, res) => {
 
 router.get('/:id/todo', async (req, res) => {
   try {
+    
     const todos= await todoHelper.getByBoard(req.params.id);
 
     res.status(200).json(todos);
@@ -82,12 +110,12 @@ router.get('/:id/todo', async (req, res) => {
 
 router.post('/:id/todo', verifyToken, async (req, res) => {
   try {
-    const newTodo = ({
+    const newTodo = {
       name: req.body.name,
-      completed: req.body.completed,
+      completed: req.body.completed === true ? "true" : "false",
       deadline: req.body.deadline,
       board_id: req.params.id
-    })
+    }
     const todo = await todoHelper.add(newTodo);
 
     res.status(201).json({

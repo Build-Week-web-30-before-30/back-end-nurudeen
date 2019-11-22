@@ -16,7 +16,10 @@ function find() {
 }
 
 function findPublic() {
-  return db('board').where({ public: 'true' });
+  return db('board').where({ public: 'true' })
+  // .select(['*', 'board.id as id', 'todo.id as todo_id'])
+  // .from('board')
+  // .join('todo', 'todo.board_id' , 'board.id');
 }
 
 async function add(newBoard) {
@@ -24,7 +27,12 @@ async function add(newBoard) {
 
   return findById(id);
 }
-
+/*
+SELECT board.id, board.name, todo.id, todo.name
+FROM board
+INNER JOIN todo
+ ON(todo.board_id = board.id)
+*/
 function findById(id) {
   return db('board')
     .where({ id })
